@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ПОТОК — коучи по вайб-кодингу</title>
+<meta name="description" content="Школа и сообщество коучей по вайб-кодингу: учитесь создавать проекты в диалоге с ИИ.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f14; --bg2:#111821; --card:#151e29; --line:#243040;
+  --text:#e6edf3; --muted:#8b9bb0;
+  --flow:#3ee8b5; --pulse:#ff6b5e;
+  --mu-red:#da291c; --mu-gold:#fbe122;
+  --r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{background:var(--bg);color:var(--text);font:16px/1.6 'IBM Plex Sans',system-ui,sans-serif}
+h1,h2,h3{font-family:'Space Grotesk',sans-serif;line-height:1.15}
+a{color:inherit;text-decoration:none}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+section{padding:72px 0;position:relative}
+.eyebrow{font:500 13px 'JetBrains Mono',monospace;color:var(--flow);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+h2{font-size:clamp(28px,4vw,40px);margin-bottom:14px}
+.lead{color:var(--muted);max-width:640px;margin-bottom:36px}
+.grid{display:grid;gap:18px}
+.g3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;transition:.2s}
+.card:hover{border-color:var(--flow);transform:translateY(-3px)}
+.tag{display:inline-block;font:400 12px 'JetBrains Mono',monospace;padding:3px 10px;border-radius:99px;border:1px solid var(--line);color:var(--muted);margin:0 6px 6px 0}
+.tag.f{color:var(--flow);border-color:rgba(62,232,181,.4)}
+.tag.p{color:var(--pulse);border-color:rgba(255,107,94,.4)}
+.btn{display:inline-block;padding:13px 24px;border-radius:99px;font-weight:600;border:0;cursor:pointer;font-size:16px;font-family:inherit;transition:.2s}
+.btn.main{background:var(--flow);color:#06251c}
+.btn.main:hover{box-shadow:0 0 24px rgba(62,232,181,.45)}
+.btn.ghost{border:1px solid var(--line);color:var(--text)}
+.btn.ghost:hover{border-color:var(--pulse);color:var(--pulse)}
+
+/* header */
+header{position:sticky;top:0;z-index:50;background:rgba(11,15,20,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font:700 20px 'Space Grotesk';letter-spacing:.05em}
+.logo span{color:var(--flow)}
+nav{display:flex;gap:20px;font-size:14px;color:var(--muted)}
+nav a:hover{color:var(--flow)}
+.burger{display:none;background:none;border:0;color:var(--text);font-size:26px;cursor:pointer}
+
+/* wave */
+.wave{display:block;width:100%;height:50px;margin-top:-1px}
+.wave path{fill:var(--bg2)}
+.wave.rev path{fill:var(--bg)}
+.alt{background:var(--bg2)}
+
+/* hero */
+.hero{padding:80px 0 90px;background:radial-gradient(800px 400px at 80% 0,rgba(62,232,181,.12),transparent),radial-gradient(600px 400px at 0 100%,rgba(255,107,94,.1),transparent)}
+.hero .wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center}
+.hero h1{font-size:clamp(36px,5.5vw,62px);margin-bottom:18px}
+.hero h1 em{font-style:normal;color:var(--flow)}
+.hero p{color:var(--muted);font-size:18px;margin-bottom:28px}
+.hero .btns{display:flex;gap:12px;flex-wrap:wrap}
+.term{background:#070a0e;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.term-bar{display:flex;gap:7px;padding:11px 14px;background:#0e141b;border-bottom:1px solid var(--line);align-items:center}
+.term-bar i{width:11px;height:11px;border-radius:50%;background:#2b3748}
+.term-bar i:nth-child(1){background:var(--pulse)}.term-bar i:nth-child(2){background:var(--mu-gold)}.term-bar i:nth-child(3){background:var(--flow)}
+.term-bar b{margin-left:auto;font:400 12px 'JetBrains Mono';color:var(--muted)}
+.term-body{padding:18px;font:400 13.5px/1.7 'JetBrains Mono',monospace;min-height:200px}
+.term-body .u{color:var(--pulse)}.term-body .a{color:var(--flow)}.term-body .c{color:var(--muted)}
+.cursor{display:inline-block;width:8px;height:15px;background:var(--flow);vertical-align:-2px;animation:bl 1s steps(2) infinite}
+@keyframes bl{50%{opacity:0}}
+
+/* timeline */
+.tl{position:relative;padding-left:30px;border-left:2px solid var(--line);max-width:760px}
+.tl-item{position:relative;margin-bottom:30px}
+.tl-item::before{content:"";position:absolute;left:-39px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--bg2);border:3px solid var(--flow)}
+.tl-item:last-child::before{border-color:var(--pulse)}
+.tl-item .y{font:500 13px 'JetBrains Mono';color:var(--flow)}
+.tl-item h3{font-size:20px;margin:2px 0 4px}
+.tl-item p{color:var(--muted)}
+.note{font-size:13px;color:var(--muted);border-left:3px solid var(--pulse);padding:6px 12px;margin-top:10px;max-width:760px}
+
+/* materials / cases */
+.card h3{font-size:19px;margin:10px 0 8px}
+.card p{color:var(--muted);font-size:15px}
+.meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.ico{font-size:28px}
+.mini-term{background:#070a0e;border-radius:10px;padding:12px;font:400 12px/1.6 'JetBrains Mono';color:var(--flow);margin:12px 0}
+.mini-term span{color:var(--muted)}
+
+/* coaches */
+.avatar{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font:700 26px 'Space Grotesk';color:#06251c;background:linear-gradient(135deg,var(--flow),#3ea8e8);margin-bottom:14px}
+.coach:nth-child(2) .avatar{background:linear-gradient(135deg,var(--pulse),#ffb35e)}
+.coach:nth-child(3) .avatar{background:linear-gradient(135deg,#a98bff,var(--flow))}
+.role{color:var(--flow);font:400 13px 'JetBrains Mono';margin-bottom:8px}
+
+/* faq */
+.faq{max-width:760px}
+details{background:var(--card);border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;padding:0 20px}
+details[open]{border-color:var(--flow)}
+summary{cursor:pointer;padding:18px 0;font:500 17px 'Space Grotesk';list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--flow);font-size:24px;line-height:1;transition:.2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--muted);padding-bottom:18px}
+
+/* news */
+.news-item{display:flex;flex-direction:column;gap:6px}
+.news-item .src{font:400 12px 'JetBrains Mono';color:var(--muted)}
+.demo{font:400 12px 'JetBrains Mono';color:var(--muted);margin-bottom:20px}
+
+/* MU */
+.mu{background:linear-gradient(180deg,#1a0b0b,#120808);border-block:1px solid #3a1512}
+.mu .eyebrow{color:var(--mu-gold)}
+.mu-head{display:flex;align-items:center;gap:18px;margin-bottom:28px;flex-wrap:wrap}
+.badge{width:64px;height:72px;background:var(--mu-red);border:3px solid var(--mu-gold);clip-path:polygon(0 0,100% 0,100% 62%,50% 100%,0 62%);display:grid;place-items:center;font:700 24px 'Space Grotesk';color:var(--mu-gold)}
+.mu .card{background:#1c0f0e;border-color:#3d1c19}
+.mu .card:hover{border-color:var(--mu-gold)}
+.next{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;background:var(--mu-red);border-radius:var(--r);padding:20px 24px;margin-bottom:20px}
+.next b{font:700 22px 'Space Grotesk'}
+.form-dots span{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;font:700 13px 'JetBrains Mono';color:#111;margin-right:4px}
+.W{background:#3ee86f}.D{background:var(--mu-gold)}.L{background:#ff5e5e}
+.lineup{font:400 13px/1.9 'JetBrains Mono';color:#e6c9c6}
+.mu .tag{border-color:#5a2a26;color:#e6a9a3}
+
+/* fun */
+.joke{font-size:17px}
+.joke small{display:block;margin-top:10px;color:var(--pulse);font:400 12px 'JetBrains Mono'}
+.sport-row{display:flex;gap:16px;overflow-x:auto;padding-bottom:12px;scroll-snap-type:x mandatory}
+.sport-row .card{flex:0 0 270px;scroll-snap-align:start}
+.sport-row::-webkit-scrollbar{height:6px}.sport-row::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
+
+/* contacts */
+form{display:grid;gap:14px}
+label{font:400 13px 'JetBrains Mono';color:var(--muted);display:grid;gap:6px}
+input,textarea{background:#0b1118;border:1px solid var(--line);border-radius:10px;padding:12px 14px;color:var(--text);font:16px 'IBM Plex Sans';width:100%}
+input:focus,textarea:focus{outline:0;border-color:var(--flow)}
+textarea{min-height:110px;resize:vertical}
+.cinfo p{margin-bottom:10px;color:var(--muted)}
+.cinfo p b{color:var(--text);font-weight:500}
+.soc{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.soc a{border:1px solid var(--line);border-radius:99px;padding:8px 16px;font:400 14px 'JetBrains Mono'}
+.soc a:hover{border-color:var(--flow);color:var(--flow)}
+.sent{display:none;color:var(--flow);font:400 14px 'JetBrains Mono'}
+
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font:400 13px 'JetBrains Mono'}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+@media(max-width:860px){
+  .hero .wrap{grid-template-columns:1fr}
+  .burger{display:block}
+  nav{display:none;position:absolute;top:60px;left:0;right:0;flex-direction:column;background:var(--bg);padding:16px 20px;border-bottom:1px solid var(--line);gap:14px;font-size:16px}
+  nav.open{display:flex}
+  section{padding:52px 0}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a href="#top" class="logo">ПО<span>ТОК</span></a>
+    <button class="burger" aria-label="Меню" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+    <nav id="nav" onclick="this.classList.remove('open')">
+      <a href="#history">История</a>
+      <a href="#materials">Материалы</a>
+      <a href="#cases">Примеры</a>
+      <a href="#coaches">Коучи</a>
+      <a href="#faq">FAQ</a>
+      <a href="#news">Новости ИИ</a>
+      <a href="#mu">МЮ</a>
+      <a href="#fun">Вне кода</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">// вайб-кодинг школа</div>
+      <h1>Говорите с ИИ — <em>получайте работающие</em> проекты</h1>
+      <p>Коучи «ПОТОК» учат формулировать задачу в диалоге с ассистентом, а не писать код построчно. Без страха и без «я не программист».</p>
+      <div class="btns">
+        <a class="btn main" href="#coaches">Подобрать коуча</a>
+        <a class="btn ghost" href="#materials">Смотреть материалы</a>
+      </div>
+    </div>
+    <div class="term" aria-label="Пример диалога с ИИ">
+      <div class="term-bar"><i></i><i></i><i></i><b>vibe-session.sh</b></div>
+      <div class="term-body" id="term"></div>
+    </div>
+  </div>
+</section>
+<svg class="wave" viewBox="0 0 1440 50" preserveAspectRatio="none"><path d="M0 25 Q180 0 360 25 T720 25 T1080 25 T1440 25 V50 H0Z"/></svg>
+
+<!-- HISTORY -->
+<section id="history" class="alt">
+  <div class="wrap">
+    <div class="eyebrow">01 / история</div>
+    <h2>Как мы пришли к вайб-кодингу</h2>
+    <p class="lead">От языков высокого уровня до разговора с ассистентом на обычном языке.</p>
+    <div class="tl">
+      <div class="tl-item"><div class="y">ДО 2021</div><h3>Предпосылки</h3><p>Языки высокого уровня, фреймворки и low-code постепенно отдаляют человека от машинного кода.</p></div>
+      <div class="tl-item"><div class="y">2021</div><h3>GitHub Copilot</h3><p>Автодополнение кода на базе ИИ становится частью повседневной работы разработчиков.</p></div>
+      <div class="tl-item"><div class="y">2022–2023</div><h3>Диалоговый кодинг</h3><p>С приходом ChatGPT миллионы людей начинают писать программы, описывая задачу словами.</p></div>
+      <div class="tl-item"><div class="y">ФЕВРАЛЬ 2025</div><h3>Термин «vibe coding»</h3><p>Андрей Карпаты формулирует идею: «поддаться вайбу» и доверить написание кода ИИ.</p></div>
+      <div class="tl-item"><div class="y">2025 — СЕЙЧАС</div><h3>Инструменты и коучинг</h3><p>Появляются специализированные среды и наставники, которые учат работать с ИИ осознанно.</p></div>
+    </div>
+    <p class="note">Даты приведены по знаниям на начало 2026 года и подлежат проверке при публикации.</p>
+  </div>
+</section>
+<svg class="wave rev" viewBox="0 0 1440 50" preserveAspectRatio="none"><path style="fill:var(--bg)" d="M0 25 Q180 50 360 25 T720 25 T1080 25 T1440 25 V0 H0Z"/></svg>
+
+<!-- MATERIALS -->
+<section id="materials">
+  <div class="wrap">
+    <div class="eyebrow">02 / материалы</div>
+    <h2>Учитесь самостоятельно</h2>
+    <p class="lead">Гайды, чек-листы, шаблоны промптов и видеокурсы — для тех, кто пока не готов к коучингу.</p>
+    <div class="grid g3">
+      <article class="card"><div class="ico">📘</div><h3>Гайд: первый проект за вечер</h3><p>Пошагово: от идеи до запущенной страницы в диалоге с ИИ.</p><div class="meta"><span class="tag f">гайд</span><span class="tag">24 стр.</span><span class="tag p">новичок</span></div></article>
+      <article class="card"><div class="ico">✅</div><h3>Чек-лист: ревью кода от ИИ</h3><p>Что проверить, прежде чем доверять сгенерированному коду.</p><div class="meta"><span class="tag f">чек-лист</span><span class="tag">2 стр.</span><span class="tag p">средний</span></div></article>
+      <article class="card"><div class="ico">💬</div><h3>Шаблоны промптов</h3><p>40 готовых формулировок для задач, багов и рефакторинга.</p><div class="meta"><span class="tag f">шаблоны</span><span class="tag">40 шт.</span><span class="tag p">новичок</span></div></article>
+      <article class="card"><div class="ico">🎬</div><h3>Видеокурс «Поток с нуля»</h3><p>Серия коротких уроков с разбором живых сессий коучей.</p><div class="meta"><span class="tag f">видеокурс</span><span class="tag">3 ч 20 мин</span><span class="tag p">новичок</span></div></article>
+      <article class="card"><div class="ico">🧠</div><h3>Гайд: контекст и память агента</h3><p>Как держать большой проект в голове у ассистента.</p><div class="meta"><span class="tag f">гайд</span><span class="tag">18 стр.</span><span class="tag p">продвинутый</span></div></article>
+      <article class="card"><div class="ico">🚀</div><h3>Видеокурс «От MVP до продакшна»</h3><p>Деплой, тесты и безопасность для проектов, собранных с ИИ.</p><div class="meta"><span class="tag f">видеокурс</span><span class="tag">5 ч</span><span class="tag p">продвинутый</span></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- CASES -->
+<section id="cases" class="alt">
+  <div class="wrap">
+    <div class="eyebrow">03 / примеры</div>
+    <h2>Кейсы учеников</h2>
+    <p class="lead">Реальные задачи, решённые в диалоге с ИИ.</p>
+    <div class="grid g3">
+      <article class="card"><h3>Трекер привычек</h3><div class="mini-term"><span>$</span> «сделай трекер привычек с<br>серией дней и графиком»<br>✔ готово: 3 экрана</div><div class="meta"><span class="tag f">⏱ 2 часа</span><span class="tag">веб-приложение</span></div></article>
+      <article class="card"><h3>Бот для записи к мастеру</h3><div class="mini-term"><span>$</span> «telegram-бот: выбор даты,<br>напоминание за час»<br>✔ готово: деплой на сервер</div><div class="meta"><span class="tag f">⏱ 1 день</span><span class="tag">бот</span></div></article>
+      <article class="card"><h3>Лендинг для кофейни</h3><div class="mini-term"><span>$</span> «одностраничник с меню<br>и картой, тёплые цвета»<br>✔ готово: адаптивная вёрстка</div><div class="meta"><span class="tag f">⏱ 45 минут</span><span class="tag">сайт</span></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- COACHES -->
+<section id="coaches">
+  <div class="wrap">
+    <div class="eyebrow">04 / коучи</div>
+    <h2>Ваши наставники</h2>
+    <p class="lead">Выберите коуча по стилю и специализации. Имена и фото — плейсхолдеры.</p>
+    <div class="grid g3">
+      <article class="card coach"><div class="avatar">А</div><h3>Алина Ветрова</h3><div class="role">веб и лендинги</div><p>Мягкий старт: помогает новичкам собрать первый проект за одну сессию и не бояться ошибок.</p></article>
+      <article class="card coach"><div class="avatar">М</div><h3>Максим Орлов</h3><div class="role">боты и автоматизация</div><p>Учит превращать рутину в скрипты и ботов, показывает, как проверять результат ИИ.</p></article>
+      <article class="card coach"><div class="avatar">Д</div><h3>Дарья Лис</h3><div class="role">для разработчиков</div><p>Переводит опытных программистов на рабочий процесс с ИИ-агентами без потери качества.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="alt">
+  <div class="wrap">
+    <div class="eyebrow">05 / faq</div>
+    <h2>Частые вопросы</h2>
+    <div class="faq" style="margin-top:28px">
+      <details open><summary>Что такое вайб-кодинг?</summary><p>Стиль разработки, при котором вы описываете задачу ИИ-ассистенту, а он пишет код. Вы направляете, проверяете и уточняете результат.</p></details>
+      <details><summary>Нужны ли навыки программирования?</summary><p>Нет. Для старта достаточно уметь чётко формулировать, что вы хотите получить. Базовые понятия коуч объяснит по ходу.</p></details>
+      <details><summary>Чем коуч отличается от преподавателя?</summary><p>Преподаватель идёт по программе, коуч работает с вашей задачей и вашим темпом, помогая развить собственный стиль работы с ИИ.</p></details>
+      <details><summary>Сколько длится сессия?</summary><p>Обычно 60 минут. Формат и частоту встреч можно обсудить с коучем.</p></details>
+      <details><summary>А если у меня нет своего проекта?</summary><p>Не проблема: коуч предложит стартовую идею под ваш уровень и интересы.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- AI NEWS -->
+<section id="news">
+  <div class="wrap">
+    <div class="eyebrow">06 / новости</div>
+    <h2>ИИ и хайтек</h2>
+    <p class="demo">// демо-данные — для живой ленты нужен RSS/API</p>
+    <div class="grid g3">
+      <article class="card news-item"><span class="src">AI · сегодня</span><h3>Новые модели научились дольше работать автономно</h3><p>Агенты выполняют многочасовые задачи по разработке с минимальным контролем.</p></article>
+      <article class="card news-item"><span class="src">Инструменты · вчера</span><h3>Редакторы кода получают режим «агента» по умолчанию</h3><p>Всё больше сред разработки встраивают чат-интерфейс вместо классического автодополнения.</p></article>
+      <article class="card news-item"><span class="src">Индустрия · 2 дня назад</span><h3>Компании пересматривают найм junior-разработчиков</h3><p>Обсуждение того, как ИИ меняет вход в профессию и требования к навыкам.</p></article>
+      <article class="card news-item"><span class="src">Безопасность · 3 дня назад</span><h3>Эксперты советуют проверять зависимости из ИИ-кода</h3><p>Ассистенты порой предлагают несуществующие или небезопасные пакеты.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- MU -->
+<section id="mu" class="mu">
+  <div class="wrap">
+    <div class="mu-head">
+      <div class="badge" aria-hidden="true">МЮ</div>
+      <div>
+        <div class="eyebrow">07 / клуб</div>
+        <h2 style="margin:0">Манчестер Юнайтед</h2>
+      </div>
+    </div>
+    <p class="demo">// демо-данные — нужен веб-поиск или спортивное API. Бейдж — собственный стилизованный элемент, не официальный герб.</p>
+    <div class="next">
+      <div><div class="mono" style="font-size:12px;opacity:.85">БЛИЖАЙШИЙ МАТЧ</div><b>Манчестер Юнайтед — Соперник</b></div>
+      <div class="mono">Сб, 17:00 · Олд Траффорд</div>
+    </div>
+    <div class="grid g3">
+      <article class="card"><h3>Форма команды</h3><p style="margin-bottom:12px">Последние 5 матчей</p><div class="form-dots"><span class="W">В</span><span class="D">Н</span><span class="W">В</span><span class="L">П</span><span class="W">В</span></div></article>
+      <article class="card"><h3>Вероятный состав</h3><div class="lineup">GK — Игрок 1<br>DEF — Игрок 2, 3, 4, 5<br>MID — Игрок 6, 7, 8<br>FWD — Игрок 9, 10, 11</div></article>
+      <article class="card"><h3>Трансферные слухи</h3><p>Клуб связывают с усилением центра поля. Источники расходятся — информация не подтверждена.</p><div class="meta"><span class="tag">слух</span></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- FUN -->
+<section id="fun">
+  <div class="wrap">
+    <div class="eyebrow">08 / вне кода</div>
+    <h2>Юмор и спорт</h2>
+    <div class="grid g3" style="margin:28px 0 40px">
+      <article class="card joke">«Я не писал этот код. ИИ написал. Я только сказал „сделай красиво“.»<small>#vibe</small></article>
+      <article class="card joke">Баг найден за 5 секунд. Фикс — три часа, потому что ИИ починил его в соседнем файле.<small>#debug</small></article>
+      <article class="card joke">— Что ты делаешь?<br>— Кодю.<br>— А где код?<br>— Я не знаю, но оно работает.<small>#vibe</small></article>
+    </div>
+    <h3 style="margin-bottom:14px">Спорт: коротко</h3>
+    <div class="sport-row">
+      <article class="card"><span class="tag f">футбол</span><h3>Тур в чемпионатах: итоги</h3><p>Лидеры сохранили отрыв, неожиданностей меньше обычного.</p></article>
+      <article class="card"><span class="tag f">теннис</span><h3>Турнир: выход в четвертьфинал</h3><p>Фавориты проходят дальше без потери сетов.</p></article>
+      <article class="card"><span class="tag f">баскетбол</span><h3>Матч звёзд: состав объявлен</h3><p>Организаторы назвали участников и капитанов.</p></article>
+      <article class="card"><span class="tag f">хоккей</span><h3>Серия плей-офф сравнялась</h3><p>Решающий матч пройдёт на домашней площадке.</p></article>
+      <article class="card"><span class="tag f">формула 1</span><h3>Квалификация: борьба за поул</h3><p>Разрыв между пилотами — тысячные доли секунды.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTS -->
+<section id="contacts" class="alt">
+  <div class="wrap">
+    <div class="eyebrow">09 / контакты</div>
+    <h2>Оставьте заявку</h2>
+    <p class="lead">Опишите задачу — мы подберём коуча и ответим в рабочее время.</p>
+    <div class="grid g2">
+      <form onsubmit="event.preventDefault();this.reset();document.getElementById('sent').style.display='block'">
+        <label>Имя<input required placeholder="Как к вам обращаться"></label>
+        <label>Email или Telegram<input required placeholder="you@mail.com / @username"></label>
+        <label>Задача<textarea required placeholder="Что хотите создать?"></textarea></label>
+        <button class="btn main" type="submit">Отправить заявку</button>
+        <div class="sent" id="sent">✔ Макет: форма визуальная, заявка никуда не отправляется.</div>
+      </form>
+      <div class="cinfo">
+        <p><b>Почта:</b> hello@potok.example</p>
+        <p><b>Телефон / WhatsApp:</b> +7 000 000-00-00</p>
+        <p><b>Часы ответа:</b> пн–пт, 10:00–19:00</p>
+        <div class="soc">
+          <a href="#contacts">Telegram</a><a href="#contacts">VK</a><a href="#contacts">YouTube</a><a href="#contacts">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap"><span>© 2026 ПОТОК · коучи по вайб-кодингу</span><span>версия макета v0.1</span></div>
+</footer>
+
+<script>
+(function(){
+  var lines=[
+    ['c','# новая сессия'],
+    ['u','> Хочу трекер привычек с графиком по неделям'],
+    ['a','✦ Понял. Делаю 3 экрана: список, добавление, статистика.'],
+    ['u','> Добавь тёмную тему'],
+    ['a','✦ Готово. Запускаю превью… ✔']
+  ];
+  var el=document.getElementById('term'),html='',i=0;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function render(extra){el.innerHTML=html+extra+'<span class="cursor"></span>'}
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function next(){
+    if(i>=lines.length){render('');return}
+    var l=lines[i],t=l[1],n=0;
+    if(reduce){html+='<div class="'+l[0]+'">'+esc(t)+'</div>';i++;next();return}
+    (function type(){
+      n+=2;
+      render('<div class="'+l[0]+'">'+esc(t.slice(0,n))+'</div>');
+      if(n<t.length)setTimeout(type,l[0]=='u'?28:16);
+      else{html+='<div class="'+l[0]+'">'+esc(t)+'</div>';i++;setTimeout(next,500)}
+    })();
+  }
+  next();
+})();
+</script>
+</body>
+</html>
